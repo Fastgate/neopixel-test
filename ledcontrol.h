@@ -17,7 +17,7 @@ class PixelGroup {
         return;
       }
 
-      this->leds[index] = value;
+      this->leds[absoluteIndex] = value;
     }
   public:
     PixelGroup(struct CRGB * leds, CFastLED * fastLed) {
