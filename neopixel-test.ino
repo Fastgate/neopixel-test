@@ -20,7 +20,7 @@ PixelGroup<100, 20> group6(leds, &FastLED);
 SweepEffect sweep1(CRGB::CornflowerBlue, 10);
 SweepEffect sweep2(CRGB::Crimson, 10);
 SweepEffect sweep3(CRGB::Maroon, 100);
-ConfettiEffect confetti(0.2);
+ConfettiEffect confetti(5);
 RainbowEffect rainbow(CHSV(0, 240, 255), 5, 20);
 PulseEffect pulse(CRGB::Pink, 1);
 

@@ -114,6 +114,7 @@ public:
 
 		if (this->totalDeltaTime >= 1000 / this->speed) {
 			this->hue++;
+			this->totalDeltaTime = 0;
 		}
 	}
 	void onFrame(struct CRGB * pixel, int pixelIndex, int pixelCount,
@@ -122,7 +123,6 @@ public:
 		(void) (deltaTime);
 
 		pixel->fadeToBlackBy(10);
-		// FIXME new confetti dots are created too fast :-(
 		if (pixelIndex == this->currentPixel
 				&& this->totalDeltaTime >= 1000 / this->speed) {
 			(*pixel) += CHSV(this->hue + random8(64), 200, 255);
