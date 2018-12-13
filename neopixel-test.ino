@@ -1,54 +1,66 @@
 #include <FastLED.h>
 #include "ledcontrol.h"
+#include "ledeffects.h"
 
-#define NUM_LEDS 52
-#define DATA_PIN 0
-#define COLOR_ORDER RGB
+#define NUM_LEDS 120
+#define DATA_PIN 2
+#define COLOR_ORDER GRB
 #define CHIPSET WS2812B
-#define BRIGHTNESS 255
+#define BRIGHTNESS 128
 
 CRGB leds[NUM_LEDS];
 
-PixelGroup<0, 1> dimmerButtonMinus(leds, &FastLED);
-PixelGroup<52, 1> dimmerButtonPlus(leds, &FastLED);
+PixelGroup<0, 20> group1(leds, &FastLED);
+PixelGroup<20, 20> group2(leds, &FastLED);
+PixelGroup<40, 20> group3(leds, &FastLED);
+PixelGroup<60, 20> group4(leds, &FastLED);
+PixelGroup<80, 20> group5(leds, &FastLED);
+PixelGroup<100, 20> group6(leds, &FastLED);
 
-PixelGroup<9, 21> rpmMeterScale(leds, &FastLED);
-PixelGroup<32, 1> rpmMeterNeedle(leds, &FastLED);
-PixelGroup<33, 1> shiftLight(leds, &FastLED);
-
-PixelGroup<34, 12> speedoScale(leds, &FastLED);
-PixelGroup<50, 1> speedoNeedle(leds, &FastLED);
-PixelGroup<30, 1> gearNumberDisplay(leds, &FastLED);
-PixelGroup<31, 1> synchroRevDisplay(leds, &FastLED);
-
-PixelGroup<46, 4> odometer(leds, &FastLED);
-PixelGroup<1, 9> boardComputer(leds, &FastLED);
-
+SweepEffect sweep1(CRGB::CornflowerBlue, 10);
+SweepEffect sweep2(CRGB::Crimson, 10);
+SweepEffect sweep3(CRGB::Maroon, 100);
+ConfettiEffect confetti(0.2);
+RainbowEffect rainbow(CHSV(0, 240, 255), 5, 20);
+PulseEffect pulse(CRGB::Pink, 1);
 
 void setup() {
-  delay(3000);
+	pinMode(DATA_PIN, OUTPUT);
 
-  FastLED.addLeds<CHIPSET, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
-  FastLED.setBrightness(BRIGHTNESS);
+	delay(500);
 
-  dimmerButtonMinus.set(CRGB::Blue);
-  dimmerButtonPlus.set(CRGB::Blue);
+	FastLED.addLeds<CHIPSET, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
+	FastLED.setBrightness(BRIGHTNESS);
 
-  rpmMeterScale.set(CRGB::White);
-  rpmMeterNeedle.set(CRGB::Red);
+	group1.set(CRGB::CornflowerBlue);
+	group2.set(CRGB::Crimson);
+	group3.set(CRGB::DeepSkyBlue);
+	group4.set(CRGB::DeepPink);
+	group5.set(CRGB::FairyLightNCC);
 
-  speedoScale.set(CRGB::White);
-  speedoNeedle.set(CRGB::Red);
-  gearNumberDisplay.set(CRGB::Pink);
-  synchroRevDisplay.set(CRGB::Green);
-  
-  odometer.set(CRGB::Orange);
-  boardComputer.set(CRGB::Orange);
+	sweep1.setLength(10);
+	sweep1.addGroup(&group1);
+
+	sweep2.setLength(10);
+	sweep2.setDirection(-1);
+	sweep2.addGroup(&group2);
+
+	sweep3.setLength(5);
+	sweep3.setBidirectional(true);
+	sweep3.addGroup(&group3);
+
+	confetti.addGroup(&group4);
+
+	rainbow.addGroup(&group5);
+
+	pulse.addGroup(&group6);
 }
 
-void loop() {   
-   shiftLight.set(CRGB::Red);
-   delay(500);
-   shiftLight.set(CRGB::Black);
-   delay(500);
+void loop() {
+	sweep1.update(&FastLED);
+	sweep2.update(&FastLED);
+	sweep3.update(&FastLED);
+	confetti.update(&FastLED);
+	rainbow.update(&FastLED);
+	pulse.update(&FastLED);
 }
